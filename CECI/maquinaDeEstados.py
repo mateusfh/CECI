@@ -1,12 +1,16 @@
 #import numpy as np
 
+import time 
+
 arq = open('entrada.txt', 'r')
 ler = arq.readlines()
 #print(ler)
 i = 0
 clk = 0
 rst = 0
-state = 0
+state = 1
+def imprimir():
+    print ("clock = ", clk, "| reset = ", string[rst], "| opcode = ", strOpcode, "| state = ", state)
 while (i < len(ler)):
     string = ler[i]
     opcode = string[2:8]
@@ -57,10 +61,26 @@ while (i < len(ler)):
 
     if (string[rst] == '1'):
         state = 0
+        state = 1
     elif (clk == 1 and string[rst] == '0'):
-        state = state + 1
-        #if (state == 4):
-            #state = 0
+        if (strOpcode[0:1] == '10'): #LW ou SW
+            #print("\nInstrucao do tipo I")
+            state = 2
+            if (strOpcode == 'LW'):
+                state = 3
+                imprimir()
+                state = 4
+            if (strOpcode == 'SW'):
+                state = 5
+        if (opcode == '000000'):
+            #print("\nInstrucao do tipo R")
+            state = 6
+            imprimir()
+            state = 7
+        if (opcode == '000010')
+            #print ("Instrucao do tipo J")
+            
+
 
 
 
@@ -70,6 +90,6 @@ while (i < len(ler)):
     elif (clk == 1):
         clk = 0
 
-    print ("clock = ", clk, "| reset = ", string[rst], "| opcode = ", strOpcode, "| state = ", state)
+    imprimir()
     i = i + 1
 arq.close()
